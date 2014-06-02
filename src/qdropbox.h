@@ -100,6 +100,8 @@ struct qdropbox_request{
 class QTDROPBOXSHARED_EXPORT QDropbox : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString key READ key WRITE setKey)
+    Q_PROPERTY(QString sharedSecret READ sharedSecret WRITE setSharedSecret)
 public:
     //! Method for oAuth authentication
     /*! These methods are used for authentication with the oAuth protocol
