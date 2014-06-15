@@ -102,6 +102,9 @@ class QTDROPBOXSHARED_EXPORT QDropbox : public QObject
     Q_OBJECT
     Q_PROPERTY(QString key READ key WRITE setKey)
     Q_PROPERTY(QString sharedSecret READ sharedSecret WRITE setSharedSecret)
+    Q_PROPERTY(QString token READ token WRITE setToken)
+    Q_PROPERTY(QString tokenSecret READ tokenSecret WRITE setTokenSecret)
+    Q_PROPERTY(QUrl authorizeLink READ authorizeLink)
 public:
     //! Method for oAuth authentication
     /*! These methods are used for authentication with the oAuth protocol
@@ -295,7 +298,7 @@ public:
 
       \param blocking <i>internal only</i> indidicates if the call should block
      */
-    int requestToken(bool blocking = false);
+    Q_INVOKABLE int requestToken(bool blocking = false);
 
     /*!
       This functions works exactly like requestToken(...) but will block until the
@@ -325,7 +328,7 @@ public:
 
       \param blocking <i>internal only</i> indidicates if the call should block
      */
-    int requestAccessToken(bool blocking = false);
+    Q_INVOKABLE int requestAccessToken(bool blocking = false);
 
     /*!
       This functions works exactly like requestAccessToken(...) but blocks until the answer
@@ -343,7 +346,7 @@ public:
 
       \param blocking <i>internal only</i> indidicates if the call should block
      */
-    void requestAccountInfo(bool blocking = false);
+    Q_INVOKABLE void requestAccountInfo(bool blocking = false);
 
     /*!
       Works exactly like accountInfo() but blocks until the data was received from the server.
@@ -383,7 +386,7 @@ public:
       \param file The absoulte path of the file (e.g. <i>/dropbox/test.txt</i>)
       \param blocking <i>internal only</i> indidicates if the call should block
     */
-    void requestMetadata(QString file, bool blocking = false);
+    Q_INVOKABLE void requestMetadata(QString file, bool blocking = false);
 
     /*!
       Works exactly like QDropbox::requestMetadata() but blocks until the metadata

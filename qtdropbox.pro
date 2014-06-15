@@ -7,7 +7,7 @@ QT       += network xml
 QT       -= gui
 
 TEMPLATE = lib
-
+CONFIG += staticlib
 DEFINES += QTDROPBOX_LIBRARY
 #          QTDROPBOX_DEBUG
 
