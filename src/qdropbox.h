@@ -105,6 +105,7 @@ class QTDROPBOXSHARED_EXPORT QDropbox : public QObject
     Q_PROPERTY(QString token READ token WRITE setToken)
     Q_PROPERTY(QString tokenSecret READ tokenSecret WRITE setTokenSecret)
     Q_PROPERTY(QUrl authorizeLink READ authorizeLink)
+    Q_ENUMS(Error)
 public:
     //! Method for oAuth authentication
     /*! These methods are used for authentication with the oAuth protocol
