@@ -39,6 +39,7 @@ const qdropbox_request_type QDROPBOX_REQ_SHRDLNK = 0x0C;
 const qdropbox_request_type QDROPBOX_REQ_BSHRDLN = 0x0D;
 const qdropbox_request_type QDROPBOX_REQ_REVISIO = 0x0E;
 const qdropbox_request_type QDROPBOX_REQ_BREVISI = 0x0F;
+const qdropbox_request_type QDROPBOX_REQ_DELETE  = 0x10;
 
 //! Internally used struct to handle network requests sent from QDropbox
 /*!
@@ -437,6 +438,7 @@ public:
 	 */
 	QList<QDropboxFileInfo> requestRevisionsAndWait(QString file, int max = 10);
 
+    Q_INVOKABLE void requestDeleteFile(QString file);
 signals:
     /*!
       This signal is emitted whenever an error occurs. The error is passed
@@ -517,6 +519,7 @@ signals:
 	*/
 	void revisionsReceived(QString revisionJson);
 
+    void fileDeleteCompleted();
 public slots:
 
 private slots:
