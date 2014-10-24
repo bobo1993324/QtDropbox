@@ -280,6 +280,9 @@ void QDropbox::requestFinished(int nr, QNetworkReply *rply)
             //file should be successfully deleted them
             emit fileDeleteCompleted();
             break;
+        case QDROPBOX_REQ_CREATEFOLDER:
+            emit createFolderCompleted();
+            break;
         default:
             errorState  = QDropbox::ResponseToUnknownRequest;
             errorText   = "Received a response to an unknown request";
@@ -1225,6 +1228,42 @@ void QDropbox::requestDeleteFile(QString file)
     QUrl xQuery(url.toString(QUrl::RemoveQuery));
     int reqnr = sendRequest(xQuery, "POST", postData);
     requestMap[reqnr].type = QDROPBOX_REQ_DELETE;
+    return;
+}
+
+void QDropbox::requestCreateFolder(QString folderPath)
+{
+    clearError();
+
+    QUrl url;
+    url.setUrl(apiurl.toString());
+
+    QUrlQuery urlQuery;
+    urlQuery.addQueryItem("oauth_consumer_key",_appKey);
+    urlQuery.addQueryItem("oauth_nonce", nonce);
+    urlQuery.addQueryItem("oauth_signature_method", signatureMethodString());
+    urlQuery.addQueryItem("oauth_timestamp", QString::number(timestamp));
+    urlQuery.addQueryItem("oauth_token", oauthToken);
+    urlQuery.addQueryItem("oauth_version", _version);
+
+    QString signature = oAuthSign(url);
+    urlQuery.addQueryItem("oauth_signature", QUrl::toPercentEncoding(signature));
+
+    urlQuery.addQueryItem("root", "dropbox");
+    urlQuery.addQueryItem("path", folderPath);
+
+    url.setPath(QString("/%1/fileops/create_folder").arg(_version.left(1)));
+    url.setQuery(urlQuery);
+
+    QString dataString = url.toString(QUrl::RemoveScheme|QUrl::RemoveAuthority|
+                                      QUrl::RemovePath).mid(1);
+
+    QByteArray postData;
+    postData.append(dataString.toUtf8());
+
+    QUrl xQuery(url.toString(QUrl::RemoveQuery));
+    int reqnr = sendRequest(xQuery, "POST", postData);
+    requestMap[reqnr].type = QDROPBOX_REQ_CREATEFOLDER;
     return;
 }
 
