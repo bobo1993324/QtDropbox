@@ -103,7 +103,7 @@ void QDropbox::setApiVersion(QString apiversion)
     _version = apiversion;
     return;
 }
-#define QTDROPBOX_DEBUG
+//#define QTDROPBOX_DEBUG
 void QDropbox::requestFinished(int nr, QNetworkReply *rply)
 {
     qDebug() << "requestFinished";

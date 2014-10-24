@@ -291,8 +291,8 @@ bool QDropboxFile::getFileContent(QString filename)
 #endif
 
     QNetworkRequest rq(request);
-    _conManager.get(rq);
-
+    QNetworkReply * reply = _conManager.get(rq);
+    connect(reply, SIGNAL(downloadProgress(qint64, qint64)), this, SIGNAL(downloadProgress(qint64, qint64)));
     _waitMode = waitForRead;
     startEventLoop();
 
