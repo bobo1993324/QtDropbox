@@ -204,7 +204,7 @@ public:
 signals:
     //progress signal
     void downloadProgress(qint64 downloaded, qint64 total);
-
+    void uploadProgress(qint64 uploaded, qint64 total);
 protected:
     qint64 readData(char *data, qint64 maxlen);
     qint64 writeData(const char *data, qint64 len);

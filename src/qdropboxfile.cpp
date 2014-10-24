@@ -462,7 +462,9 @@ bool QDropboxFile::putFile()
 #endif
 
     QNetworkRequest rq(request);
-    _conManager.put(rq, *_buffer);
+
+    QNetworkReply * reply = _conManager.put(rq, *_buffer);
+    connect(reply, SIGNAL(uploadProgress(qint64, qint64)), this, SIGNAL(downloadProgress(qint64, qint64)));
 
     _waitMode = waitForWrite;	
     startEventLoop();
