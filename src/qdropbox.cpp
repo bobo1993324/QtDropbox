@@ -1014,7 +1014,6 @@ void QDropbox::requestMetadata(QString file, bool blocking, QString hash)
 
     url.setQuery(urlQuery);
     url.setPath(QString("/%1/metadata/%2").arg(_version.left(1), file));
-    qDebug() << url;
     int reqnr = sendRequest(url);
     if(blocking)
     {
