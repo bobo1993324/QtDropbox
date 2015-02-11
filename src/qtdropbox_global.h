@@ -20,4 +20,6 @@ const qint32 QDROPBOX_ERROR_REQUEST_CAP         = 503;
 const qint32 QDROPBOX_ERROR_USER_OVER_QUOTA     = 507;
 #endif
 
+const qint32 QDROPBOX_NOT_MODIFIED        = 304;
+
 #endif // QTDROPBOX_GLOBAL_H

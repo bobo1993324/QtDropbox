@@ -106,7 +106,6 @@ void QDropbox::setApiVersion(QString apiversion)
 //#define QTDROPBOX_DEBUG
 void QDropbox::requestFinished(int nr, QNetworkReply *rply)
 {
-    qDebug() << "requestFinished";
 #ifdef QTDROPBOX_DEBUG
     int resp_bytes = rply->bytesAvailable();
 #endif
@@ -174,6 +173,13 @@ void QDropbox::requestFinished(int nr, QNetworkReply *rply)
         break;
     default:
         break;
+    }
+
+    if (rply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == QDROPBOX_NOT_MODIFIED)
+    {
+        emit metaNotModified();
+        checkReleaseEventLoop(nr);
+        return;
     }
 
     if(rply->error() != QNetworkReply::NoError)
@@ -983,7 +989,7 @@ void QDropbox::parseBlockingAccountInfo(QString response)
     return;
 }
 
-void QDropbox::requestMetadata(QString file, bool blocking)
+void QDropbox::requestMetadata(QString file, bool blocking, QString hash)
 {
     clearError();
 
@@ -1002,10 +1008,13 @@ void QDropbox::requestMetadata(QString file, bool blocking)
 
     QString signature = oAuthSign(url);
     urlQuery.addQueryItem("oauth_signature", QUrl::toPercentEncoding(signature));
+    if (!hash.isEmpty()) {
+        urlQuery.addQueryItem("hash", hash);
+    }
 
     url.setQuery(urlQuery);
     url.setPath(QString("/%1/metadata/%2").arg(_version.left(1), file));
-
+    qDebug() << url;
     int reqnr = sendRequest(url);
     if(blocking)
     {
@@ -1178,10 +1187,10 @@ void QDropbox::requestRevisions(QString file, int max, bool blocking)
 QList<QDropboxFileInfo> QDropbox::requestRevisionsAndWait(QString file, int max)
 {
 	clearError();
-	requestRevisions(file, max, true);
+    requestRevisions(file, max, true);
 	QList<QDropboxFileInfo> revisionList;
 
-	if(errorState != QDropbox::NoError || !_tempJson.isValid())
+    if(errorState != QDropbox::NoError|| !_tempJson.isValid())
 		return revisionList;
 
 	QStringList responseList = _tempJson.getArray();

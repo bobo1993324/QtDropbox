@@ -389,7 +389,7 @@ public:
       \param file The absoulte path of the file (e.g. <i>/dropbox/test.txt</i>)
       \param blocking <i>internal only</i> indidicates if the call should block
     */
-    Q_INVOKABLE void requestMetadata(QString file, bool blocking = false);
+    Q_INVOKABLE void requestMetadata(QString file, bool blocking = false, QString hash="");
 
     /*!
       Works exactly like QDropbox::requestMetadata() but blocks until the metadata
@@ -523,6 +523,7 @@ signals:
 
     void fileDeleteCompleted();
     void createFolderCompleted();
+    void metaNotModified();
 public slots:
 
 private slots:
